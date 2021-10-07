@@ -26,10 +26,10 @@ BRFSS_k<-BRFSS_k[ , !(names(BRFSS_k) %in% c("diabetes"))]
 #1
 md.pattern(BRFSS_k)
 #2
-marginplot(BRFSS_k[,c('ht_meters','wtkg')],col = c('blue','red'),cex=1,cex.lab=1,
-           cex.numbers = 0.7, pch = 20)
+marginplot(BRFSS_k[,c('ht_meters','wtkg')],col = c('blue','red','black'),cex=1,cex.lab=1,
+           cex.numbers = 0.7, pch = 20) #marginplot need three colors 
 #3
-pbox(BRFSS_k, pos=3)
+pbox(BRFSS_k, pos=3, numbers = F)
 #4
 
 #All of steps 1-6 are performed to allow calculation of bmi from imputed height and weight. If you have no calculated variables from other variables in your analyses, you can skip these steps. This is tricky to figure out so the code is provided to you and explained.
@@ -67,13 +67,12 @@ mice::complete(imp)[is.na(BRFSS_k$ht_meters)|is.na(BRFSS_k$wtkg),]
 ##yes
 
 #6
-stripplot(x=imp, data = wtkg ~.imp, jit=T, pch=20)
-stripplot(x=imp, data =ht_meters ~.imp, jit=T, pch=20)
+stripplot(x=imp, data = wtkg ~.imp, jit=T, pch=20, xlab = "1=No Impute, Imputation Number")
+stripplot(x=imp, data =ht_meters ~.imp, jit=T, pch=20, xlab = "1=No Impute, Imputation Number")
 
 #7
 fit = with(imp,lm(ht_meters~sex))
 pool(fit)
+summary(pool(fit))
 complete_fit = with(BRFSS_k,lm(ht_meters~sex))
 summary(complete_fit)
-pool.compare(complete_fit,fit,method = c('wald'))
-D1(complete_fit,fit)
