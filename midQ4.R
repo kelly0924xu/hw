@@ -9,5 +9,8 @@ with(BRFSS, by(ht_meters, SEX, median, na.rm=T))
 library(ggplot2)
 ggplot(BRFSS, aes(x=SEX, y=ht_meters)) +
   geom_boxplot(aes(group = SEX)) +
-  scale_x_continuous(breaks = c(1,2), limits = c(0,3), labels=c('Male',"Female")) +
+  scale_x_continuous(breaks = c(1,2), limits = c(0,3), labels=c('Male',"F emale")) +
   ylab('Height (meters)')
+
+#get mean height by sex
+with(BRFSS, by(ht_meters, SEX, mean, na.rm=T))
